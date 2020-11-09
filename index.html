@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    input {
+        padding: 10px;
+        font: 20px Arial;
+        width: 70%;
+    }
+</style>
+
+<body>
+    <input type='currency' value="123" placeholder='Type a number & click outside' />
+</body>
+<script>
+    var currencyInput = document.querySelector('input[type="currency"]')
+    var currency = 'TRY' // https://www.currency-iso.org/dam/downloads/lists/list_one.xml
+
+    // format inital value
+    onBlur({
+        target: currencyInput
+    })
+
+    // bind event listeners
+    currencyInput.addEventListener('focus', onFocus)
+    currencyInput.addEventListener('blur', onBlur)
+
+
+    function localStringToNumber(s) {
+        return Number(String(s).replace(/[^0-9.-]+/g, ""))
+    }
+
+    function onFocus(e) {
+        var value = e.target.value;
+        e.target.value = value ? localStringToNumber(value) : ''
+    }
+
+    function onBlur(e) {
+        var value = e.target.value
+
+        var options = {
+            maximumFractionDigits: 2,
+            currency: currency,
+            style: "currency",
+            currencyDisplay: "symbol"
+        }
+
+        e.target.value = value ?
+            localStringToNumber(value).toLocaleString(undefined, options) :
+            ''
+    }
+</script>
+
+</html>
